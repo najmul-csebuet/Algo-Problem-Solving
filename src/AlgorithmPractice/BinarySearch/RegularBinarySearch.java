@@ -2,18 +2,65 @@ package AlgorithmPractice.BinarySearch;
 
 import java.util.Arrays;
 
-public class BinarySearch {
+public class RegularBinarySearch {
     public static void main(String[] args) {
         int[] array = {1, 2, 3, 5, 5, 5, 5, 5, 5, 5, 5, 6};
         Arrays.sort(array);
         int searchFor = 5;
 
-        builtinBinarySearch(array, searchFor);
         regularBinarySearch(array, searchFor);
-        jumpBinarySearch(array, searchFor);
 
         firstOccurrence(array, searchFor);
         lastOccurrence(array, searchFor);
+
+        findSmallestValidSolution();
+    }
+
+    private static void findSmallestValidSolution() {
+        // find the smallest index where values[k] == true
+        boolean[] values = {false, false, false, true, true, true, true};
+        // Hint: find first true or last false
+
+        // let's find first true position
+        int low = 0, high = values.length - 1, position = -1;
+        while (low <= high) {
+            int mid = low + (high - low) / 2;
+            if (values[mid]) {
+                position = mid;
+                high = mid - 1;
+            } else {
+                low = mid + 1;
+            }
+        }
+
+        if (position >= 0) {
+            System.out.println("Smallest valid index is: " + position);
+        } else {
+            System.out.println("All solutions are false");
+        }
+
+        // let's find last false position
+        low = 0;
+        high = values.length - 1;
+        position = -1;
+        while (low <= high) {
+            int mid = low + (high - low) / 2;
+            if (!values[mid]) {
+                position = mid;
+                low = mid + 1;
+            } else {
+                high = mid - 1;
+            }
+        }
+
+        if (position >= 0) {
+            System.out.println("largest index where value is false: " + position);
+        } else {
+            System.out.println("All solutions are true");
+        }
+
+
+        // Now let's solve this with jump technique
     }
 
     private static void lastOccurrence(int[] array, int searchFor) {
@@ -64,17 +111,6 @@ public class BinarySearch {
         }
     }
 
-    private static void builtinBinarySearch(int[] array, int searchFor) {
-        // Java Util Way
-        int position = Arrays.binarySearch(array, searchFor);
-        boolean found = position >= 0;
-        if (found) {
-            System.out.println("Found the key = " + searchFor);
-        } else {
-            System.out.println("Not found the key = " + searchFor);
-        }
-    }
-
     private static void regularBinarySearch(int[] array, int searchFor) {
         int low = 0, high = array.length - 1;
         while (low <= high) {
@@ -90,20 +126,5 @@ public class BinarySearch {
             }
         }
         System.out.println("Not found the key = " + searchFor);
-    }
-
-    private static void jumpBinarySearch(int[] array, int searchFor) {
-        int base = 0;
-        for (int jumpAmount = array.length / 2; jumpAmount >= 1; jumpAmount /= 2) {
-            while (base + jumpAmount < array.length && array[base + jumpAmount] <= searchFor) {
-                base += jumpAmount;
-            }
-        }
-
-        if (array[base] == searchFor) {
-            System.out.println("Found the key = " + searchFor);
-        } else {
-            System.out.println("Not found the key = " + searchFor);
-        }
     }
 }
