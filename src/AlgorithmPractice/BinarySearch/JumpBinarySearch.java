@@ -12,6 +12,8 @@ public class JumpBinarySearch {
     }
 
     private static void jumpBinarySearch(int[] array, int searchFor) {
+
+        // this version of BS searches for right most ans
         int base = 0;
         for (int jumpAmount = array.length / 2; jumpAmount >= 1; jumpAmount /= 2) {
             while (base + jumpAmount < array.length && array[base + jumpAmount] <= searchFor) {
